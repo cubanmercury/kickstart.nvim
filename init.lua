@@ -407,20 +407,27 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        -- hidden = true,
-        -- file_ignore_patterns = {
-        --   'node_modules',
-        --   'build',
-        --   'dist',
-        --   'yarn.lock',
-        -- },
-        -- },
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {},
+        defaults = {
+          -- hidden = true,
+          -- file_ignore_patterns = {
+          --   'node_modules',
+          --   'build',
+          --   'dist',
+          --   'yarn.lock',
+          -- },
+          -- },
+          --   mappings = {
+          --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          --   },
+        },
+        pickers = {
+          find_files = {
+            theme = 'ivy',
+          },
+          -- live_grep = {
+          --   theme = 'ivy',
+          -- },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -445,9 +452,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       vim.keymap.set('n', '<leader>sf', function()
-        builtin.find_files {
+        local opts = {
           search_dirs = { '.', '.github' },
         }
+        builtin.find_files { opts }
       end, { desc = '[S]earch [F]iles' })
 
       -- Slightly advanced example of overriding default behavior and theme
