@@ -219,6 +219,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Close nvim-tree automatically if it's the final buffer
+vim.api.nvim_create_autocmd('BufEnter', {
+  nested = true,
+  callback = function()
+    if #vim.api.nvim_list_wins() == 1 then
+      local bufname = vim.api.nvim_buf_get_name(0)
+      if bufname:match 'NvimTree_' then
+        vim.cmd 'quit'
+      end
+    end
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -379,7 +392,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = true },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -991,6 +1004,34 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup {
+        vim.keymap.set('n', '<leader>ee', ':NvimTreeToggle<CR>', { desc = 'open toggle file tree', noremap = true, silent = true }),
+        vim.keymap.set('n', '<leader>ef', function()
+          local api = require 'nvim-tree.api'
+          local curr_buf = vim.api.nvim_get_current_buf()
+          local curr_name = vim.api.nvim_buf_get_name(curr_buf)
+
+          if curr_name:match 'NvimTree_' then
+            vim.cmd 'wincmd p'
+          else
+            if api.tree.is_visible() then
+              api.tree.focus()
+            else
+              api.tree.open()
+            end
+          end
+        end, { desc = 'focus toggle file tree', noremap = true, silent = true }),
+      }
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
