@@ -1074,12 +1074,36 @@ require('lazy').setup({
       -- Copilot status
       vim.keymap.set('n', '<leader>cs', ':Copilot status<CR>', { desc = '[C]opilot [S]tatus', noremap = true, silent = true })
       -- Copilot config
-      vim.keymap.set('n', '<leader>cc', ':Copilot config<CR>', { desc = '[C]opilot [C]onfig', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>cC', ':Copilot config<CR>', { desc = '[C]opilot [C]onfig', noremap = true, silent = true })
       -- Copilot setup
       vim.keymap.set('n', '<leader>cS', ':Copilot setup<CR>', { desc = '[C]opilot [S]etup', noremap = true, silent = true })
       -- Copilot signout
       vim.keymap.set('n', '<leader>cl', ':Copilot signout<CR>', { desc = '[C]opilot [L]ogout', noremap = true, silent = true })
     end,
+  },
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    dependencies = {
+      { 'github/copilot.vim' }, -- or zbirenbaum/copilot.lua
+      { 'nvim-lua/plenary.nvim', branch = 'master' }, -- for curl, log and async functions
+    },
+    build = 'make tiktoken', -- Only on MacOS or Linux
+    opts = {
+      -- See Configuration section for options
+    },
+    config = function()
+      require('CopilotChat').setup()
+      -- CopilotChat keybindings
+      vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = 'Toggle CopilotChat', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>cs', ':CopilotChatSend<CR>', { desc = '[S]end to CopilotChat', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>cx', ':CopilotChatStop<CR>', { desc = 'CopilotChat [X] Stop', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>cr', ':CopilotChatReset<CR>', { desc = '[R]eset CopilotChat', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>c?', ':help copilotchat<CR>', { desc = 'CopilotChat [H]elp', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>cm', ':CopilotChatModels<CR>', { desc = 'CopilotChat [M]odels', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>ca', ':CopilotChatAgents<CR>', { desc = 'CopilotChat [A]gents', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>ce', ':CopilotChatExplain<CR>', { desc = 'CopilotChat [E]xplain', noremap = true, silent = true })
+    end,
+    -- See Commands section for default commands if you want to lazy load on them
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
