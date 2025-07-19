@@ -439,6 +439,16 @@ require('lazy').setup({
         pickers = {
           find_files = {
             theme = 'ivy',
+            cwd = vim.fn.getcwd(),
+            find_command = {
+              'rg',
+              '--files',
+              '--hidden',
+              '--glob',
+              '!**/.git/*',
+              -- '--glob',
+              -- '!.github/',
+            },
           },
           -- live_grep = {
           --   theme = 'ivy',
@@ -468,10 +478,11 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       vim.keymap.set('n', '<leader>sf', function()
-        local opts = {
-          search_dirs = { '.', '.github' },
-        }
-        builtin.find_files { opts }
+        -- local opts = {
+        --   search_dirs = { '.', '.github' },
+        -- }
+        -- builtin.find_files { opts }
+        builtin.find_files()
       end, { desc = '[S]earch [F]iles' })
 
       -- Slightly advanced example of overriding default behavior and theme
