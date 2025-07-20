@@ -1,5 +1,5 @@
 --[[
-
+======         ||                    ||   | === |          ========
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -1104,10 +1104,16 @@ require('lazy').setup({
       -- See Configuration section for options
     },
     config = function()
-      require('CopilotChat').setup()
+      require('CopilotChat').setup {
+        selection = function(source)
+          local select = require 'CopilotChat.select'
+          return select.visual(source) or select.buffer(source)
+        end,
+      }
       -- CopilotChat keybindings
       vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = 'Toggle CopilotChat', noremap = true, silent = true })
-      vim.keymap.set('n', '<leader>cs', ':CopilotChatSend<CR>', { desc = '[S]end to CopilotChat', noremap = true, silent = true })
+      -- vim.keymap.set('n', '<leader>cs', ':CopilotChatSend<CR>', { desc = '[S]end to CopilotChat', noremap = true, silent = true })
+      vim.keymap.set('v', '<leader>cc', '<Cmd>CopilotChatToggle<CR>', { desc = '[C]end [V]isual to CopilotChat', noremap = true, silent = true })
       vim.keymap.set('n', '<leader>cx', ':CopilotChatStop<CR>', { desc = 'CopilotChat [X] Stop', noremap = true, silent = true })
       vim.keymap.set('n', '<leader>cr', ':CopilotChatReset<CR>', { desc = '[R]eset CopilotChat', noremap = true, silent = true })
       vim.keymap.set('n', '<leader>c?', ':help copilotchat<CR>', { desc = 'CopilotChat [H]elp', noremap = true, silent = true })
