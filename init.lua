@@ -141,6 +141,10 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 
+-- Line wrapping
+vim.o.wrap = true
+vim.o.linebreak = true
+
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
@@ -821,6 +825,9 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        rust = { 'rustfmt', lsp_format = 'fallback' },
+        -- python = { 'isort', 'black' },
+        -- go = { 'gofumpt', lsp_format = 'fallback'
       },
     },
   },
@@ -1091,6 +1098,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>cS', ':Copilot setup<CR>', { desc = '[C]opilot [S]etup', noremap = true, silent = true })
       -- Copilot signout
       vim.keymap.set('n', '<leader>cl', ':Copilot signout<CR>', { desc = '[C]opilot [L]ogout', noremap = true, silent = true })
+      -- Copilot disable
+      vim.keymap.set('n', '<leader>cD', ':Copilot disable<CR>', { desc = '[C]opilot [D]isable', noremap = true, silent = true })
+      -- Copilot enable
+      vim.keymap.set('n', '<leader>cE', ':Copilot enable<CR>', { desc = '[C]opilot [E]nable', noremap = true, silent = true })
     end,
   },
   {
