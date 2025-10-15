@@ -448,9 +448,10 @@ require('lazy').setup({
               'rg',
               '--files',
               '--hidden',
+              '--no-ignore',
+              '--no-ignore-vcs',
               '--glob',
               '!**/.git/*',
-              -- '--glob',
               -- '!.github/',
             },
           },
@@ -1035,6 +1036,10 @@ require('lazy').setup({
     },
     config = function()
       require('nvim-tree').setup {
+        filters = {
+          dotfiles = false,
+          git_ignored = false,
+        },
         view = {
           width = 30,
           side = 'left',
